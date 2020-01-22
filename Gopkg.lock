@@ -10,6 +10,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  digest = "1:51712f342cdefcad2c867f399a3ce8223675221d4386c81cfcccd8f0656e722e"
+  name = "github.com/go-telegram-bot-api/telegram-bot-api"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9860bdfd3a171ceafb6e1eafa163482a6ef92643"
+  version = "v4.6.4"
+
+[[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -104,6 +112,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:420817f94b6c172dabb8a054d0b2d257d7437a87c7c8c7ee432bc008a577fc46"
+  name = "github.com/technoweenie/multipartstreamer"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
+  version = "v1.0.1"
+
+[[projects]]
   branch = "master"
   digest = "1:46aee4748419921a611e49842c732b3b8afe6a0926017ad1a68b9d0e11fdd288"
   name = "golang.org/x/sys"
@@ -145,6 +161,9 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/spf13/viper"]
+  input-imports = [
+    "github.com/go-telegram-bot-api/telegram-bot-api",
+    "github.com/spf13/viper",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
