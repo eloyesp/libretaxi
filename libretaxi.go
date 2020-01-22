@@ -2,15 +2,17 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq" // important
 	"libretaxi/config"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"libretaxi/repository"
 	"log"
 )
 
 type Context struct {
 	bot *tgbotapi.BotAPI
-	db *sql.DB
+	repo *repository.Repository
 }
 
 func initContext() *Context {
@@ -37,7 +39,7 @@ func initContext() *Context {
 	db.Query("SELECT 1")
 
 	context.bot = bot
-	context.db = db
+	context.repo = repository.NewRepository(db)
 	return context
 }
 
@@ -55,6 +57,9 @@ func main() {
 		}
 
 		log.Printf("[%d - %s] %s", update.Message.Chat.ID, update.Message.From.UserName, update.Message.Text)
+
+		user := context.repo.FindUser(update.Message.Chat.ID)
+		fmt.Printf("%+v\n", user)
 
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		msg.ReplyToMessageID = update.Message.MessageID
