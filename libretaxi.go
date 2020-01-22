@@ -8,10 +8,17 @@ import (
 	"log"
 )
 
-func main() {
+type Context struct {
+	bot *tgbotapi.BotAPI
+	db *sql.DB
+}
+
+func initContext() *Context {
 	config.Init("libretaxi")
 	log.Printf("Using '%s' telegram token...\n", config.C().Telegram_Token)
 	log.Printf("Using '%s' database connection string...", config.C().Db_Conn_Str)
+
+	context := &Context{}
 
 	bot, err := tgbotapi.NewBotAPI(config.C().Telegram_Token)
 	if err != nil {
@@ -29,10 +36,18 @@ func main() {
 	}
 	db.Query("SELECT 1")
 
+	context.bot = bot
+	context.db = db
+	return context
+}
+
+func main() {
+	context := initContext()
+
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, err := bot.GetUpdatesChan(u)
+	updates, _ := context.bot.GetUpdatesChan(u)
 
 	for update := range updates {
 		if update.Message == nil { // ignore any non-Message Updates
@@ -44,6 +59,6 @@ func main() {
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		msg.ReplyToMessageID = update.Message.MessageID
 
-		bot.Send(msg)
+		context.bot.Send(msg)
 	}
 }
