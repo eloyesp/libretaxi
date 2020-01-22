@@ -6,7 +6,8 @@ import (
 )
 
 type Config struct {
-	Telegram_Token	 string
+	Telegram_Token string
+	Db_Conn_Str string
 }
 
 var config Config

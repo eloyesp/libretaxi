@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	_ "github.com/lib/pq" // important
 	"libretaxi/config"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
@@ -9,6 +11,7 @@ import (
 func main() {
 	config.Init("libretaxi")
 	log.Printf("Using '%s' telegram token...\n", config.C().Telegram_Token)
+	log.Printf("Using '%s' database connection string...", config.C().Db_Conn_Str)
 
 	bot, err := tgbotapi.NewBotAPI(config.C().Telegram_Token)
 	if err != nil {
@@ -17,6 +20,14 @@ func main() {
 	// bot.Debug = true
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	db, err := sql.Open("postgres", config.C().Db_Conn_Str)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Print("Successfully connected to the database...")
+	}
+	db.Query("SELECT 1")
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
