@@ -2,25 +2,21 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"github.com/go-telegram-bot-api/telegram-bot-api"
 	_ "github.com/lib/pq" // important
 	"libretaxi/config"
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"libretaxi/context"
+	"libretaxi/menu"
 	"libretaxi/repository"
 	"log"
 )
 
-type Context struct {
-	bot *tgbotapi.BotAPI
-	repo *repository.Repository
-}
-
-func initContext() *Context {
+func initContext() *context.Context {
 	config.Init("libretaxi")
 	log.Printf("Using '%s' telegram token...\n", config.C().Telegram_Token)
 	log.Printf("Using '%s' database connection string...", config.C().Db_Conn_Str)
 
-	context := &Context{}
+	context := &context.Context{}
 
 	bot, err := tgbotapi.NewBotAPI(config.C().Telegram_Token)
 	if err != nil {
@@ -38,8 +34,8 @@ func initContext() *Context {
 	}
 	db.Query("SELECT 1")
 
-	context.bot = bot
-	context.repo = repository.NewRepository(db)
+	context.Bot = bot
+	context.Repo = repository.NewRepository(db)
 	return context
 }
 
@@ -49,7 +45,7 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, _ := context.bot.GetUpdatesChan(u)
+	updates, _ := context.Bot.GetUpdatesChan(u)
 
 	for update := range updates {
 		if update.Message == nil { // ignore any non-Message Updates
@@ -58,12 +54,11 @@ func main() {
 
 		log.Printf("[%d - %s] %s", update.Message.Chat.ID, update.Message.From.UserName, update.Message.Text)
 
-		user := context.repo.FindUser(update.Message.Chat.ID)
-		fmt.Printf("%+v\n", user)
+		menu.HandleMessage(context, update.Message.Chat.ID, update.Message.Text)
 
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		msg.ReplyToMessageID = update.Message.MessageID
 
-		context.bot.Send(msg)
+		context.Bot.Send(msg)
 	}
 }
