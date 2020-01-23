@@ -6,17 +6,8 @@ import (
 	"log"
 )
 
-type MenuId int
-
-const (
-	Init MenuId = 0
-	AskLocation MenuId = 100
-	Feed MenuId = 200
-	Post MenuId = 300
-)
-
 type Handler interface {
-	Handle(user *objects.User, context *context.Context, message string) (callNext bool)
+	Handle(user *objects.User, context *context.Context, message string) (success bool)
 }
 
 func HandleMessage(context *context.Context, userId int64, message string) {
@@ -34,6 +25,9 @@ func HandleMessage(context *context.Context, userId int64, message string) {
 
 	var handler Handler
 
-	handler = NewInitMenu()
+	//handler = NewInitMenu()
+	handler = NewAskLocationMenu()
 	handler.Handle(user, context, message)
+
+	// call next on success
 }

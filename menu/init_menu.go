@@ -10,7 +10,7 @@ import (
 type InitMenuHandler struct {
 }
 
-func (handler *InitMenuHandler) Handle(user *objects.User, context *context.Context, message string) (callNext bool) {
+func (handler *InitMenuHandler) Handle(user *objects.User, context *context.Context, message string) (success bool) {
 	log.Println("Init menu")
 
 	// Send welcome message
@@ -18,7 +18,7 @@ func (handler *InitMenuHandler) Handle(user *objects.User, context *context.Cont
 	context.Bot.Send(msg)
 
 	// reset props and save to db
-	user.MenuId = 0
+	user.MenuId = objects.Menu_Init
 	context.Repo.SaveUser(user)
 
 	return true

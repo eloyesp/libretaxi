@@ -56,9 +56,9 @@ func main() {
 
 		menu.HandleMessage(context, update.Message.Chat.ID, update.Message.Text)
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
-
-		context.Bot.Send(msg)
+		//msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+		//msg.ReplyToMessageID = update.Message.MessageID
+		//
+		//context.Bot.Send(msg)
 	}
 }
