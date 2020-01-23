@@ -34,10 +34,10 @@ func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *conte
 		return true
 	} else {
 		var buttons = []tgbotapi.KeyboardButton{
-			{Text: "Next"},
+			tgbotapi.NewKeyboardButtonLocation("Next"),
 		}
 
-		msg := tgbotapi.NewMessage(user.UserId, "Click \"Next\" to send your location.")
+		msg := tgbotapi.NewMessage(user.UserId, "Click \"Next\" (from mobile phone) to share your location.")
 		msg.ReplyMarkup = tgbotapi.NewReplyKeyboard(buttons)
 		context.Bot.Send(msg)
 	}
