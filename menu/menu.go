@@ -1,7 +1,6 @@
 package menu
 
 import (
-	"fmt"
 	"libretaxi/context"
 	"libretaxi/objects"
 	"log"
@@ -22,8 +21,16 @@ type Handler interface {
 
 func HandleMessage(context *context.Context, userId int64, message string) {
 	user := context.Repo.FindUser(userId)
-	fmt.Printf("%+v\n", user)
-	log.Println(message)
+
+	if user == nil {
+		user = &objects.User{
+			UserId: userId,
+			MenuId: 0,
+		}
+	}
+
+	//fmt.Printf("%+v\n", user)
+	log.Printf("Message: '%s'", message)
 
 	var handler Handler
 
