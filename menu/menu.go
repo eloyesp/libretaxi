@@ -44,6 +44,8 @@ func HandleMessage(context *context.Context, userId int64, message *tgbotapi.Mes
 			handler = NewInitMenu()
 		case objects.Menu_AskLocation:
 			handler = NewAskLocationMenu()
+		case objects.Menu_Feed:
+			handler = NewFeedMenu()
 		default:
 			handler = nil
 		}
