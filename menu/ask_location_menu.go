@@ -20,18 +20,17 @@ func (handler *AskLocationMenuHandler) saveLocation() (success bool) {
 	return false
 }
 
-func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *context.Context, message string) (success bool) {
+func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *context.Context, message string) {
 	log.Println("Ask location menu")
 
 	handler.user = user
 	handler.context = context
 	handler.message = message
 
-	user.MenuId = objects.Menu_AskLocation
-	context.Repo.SaveUser(user)
-
 	if len(message) > 0 && handler.saveLocation() {
-		return true
+		user.MenuId = objects.Menu_Feed
+		context.Repo.SaveUser(user)
+		return
 	} else {
 		var buttons = []tgbotapi.KeyboardButton{
 			tgbotapi.NewKeyboardButtonLocation("Next"),
@@ -41,8 +40,6 @@ func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *conte
 		msg.ReplyMarkup = tgbotapi.NewReplyKeyboard(buttons)
 		context.Bot.Send(msg)
 	}
-
-	return false
 }
 
 func NewAskLocationMenu() *AskLocationMenuHandler {

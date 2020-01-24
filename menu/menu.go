@@ -7,7 +7,7 @@ import (
 )
 
 type Handler interface {
-	Handle(user *objects.User, context *context.Context, message string) (success bool)
+	Handle(user *objects.User, context *context.Context, message string)
 }
 
 func HandleMessage(context *context.Context, userId int64, message string) {
