@@ -44,8 +44,14 @@ func HandleMessage(context *context.Context, userId int64, message *tgbotapi.Mes
 			handler = NewInitMenu()
 		case objects.Menu_AskLocation:
 			handler = NewAskLocationMenu()
+		default:
+			handler = nil
 		}
 
-		handler.Handle(user, context, message)
+		if handler != nil {
+			handler.Handle(user, context, message)
+		} else {
+			log.Printf("Handler not implemented for menu with id %d\n", user.MenuId)
+		}
 	}
 }

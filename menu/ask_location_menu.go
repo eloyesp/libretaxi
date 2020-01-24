@@ -14,9 +14,9 @@ type AskLocationMenuHandler struct {
 }
 
 func (handler *AskLocationMenuHandler) saveLocation() {
-	//user.MenuId = 0
-	//context.Repo.SaveUser(user)
-	//handler.message.Location.Latitude
+	handler.user.Lat = handler.message.Location.Latitude
+	handler.user.Lon = handler.message.Location.Longitude
+	handler.context.Repo.SaveUser(handler.user)
 }
 
 func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *context.Context, message *tgbotapi.Message) {
@@ -29,6 +29,8 @@ func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *conte
 	if message.Location != nil {
 		log.Printf("Saving location: %+v\n", message.Location)
 		handler.saveLocation()
+
+		// update state
 		user.MenuId = objects.Menu_Feed
 		context.Repo.SaveUser(user)
 		return
