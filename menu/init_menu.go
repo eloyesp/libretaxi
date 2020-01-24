@@ -10,7 +10,7 @@ import (
 type InitMenuHandler struct {
 }
 
-func (handler *InitMenuHandler) Handle(user *objects.User, context *context.Context, message string) {
+func (handler *InitMenuHandler) Handle(user *objects.User, context *context.Context, message *tgbotapi.Message) {
 	log.Println("Init menu")
 
 	// Send welcome message

@@ -54,7 +54,7 @@ func main() {
 
 		log.Printf("[%d - %s] %s", update.Message.Chat.ID, update.Message.From.UserName, update.Message.Text)
 
-		menu.HandleMessage(context, update.Message.Chat.ID, update.Message.Text)
+		menu.HandleMessage(context, update.Message.Chat.ID, update.Message)
 
 		//msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		//msg.ReplyToMessageID = update.Message.MessageID

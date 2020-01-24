@@ -10,24 +10,25 @@ import (
 type AskLocationMenuHandler struct {
 	user *objects.User
 	context *context.Context
-	message string
+	message *tgbotapi.Message
 }
 
-func (handler *AskLocationMenuHandler) saveLocation() (success bool) {
+func (handler *AskLocationMenuHandler) saveLocation() {
 	//user.MenuId = 0
 	//context.Repo.SaveUser(user)
-
-	return false
+	//handler.message.Location.Latitude
 }
 
-func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *context.Context, message string) {
+func (handler *AskLocationMenuHandler) Handle(user *objects.User, context *context.Context, message *tgbotapi.Message) {
 	log.Println("Ask location menu")
 
 	handler.user = user
 	handler.context = context
 	handler.message = message
 
-	if len(message) > 0 && handler.saveLocation() {
+	if message.Location != nil {
+		log.Printf("Saving location: %+v\n", message.Location)
+		handler.saveLocation()
 		user.MenuId = objects.Menu_Feed
 		context.Repo.SaveUser(user)
 		return
