@@ -7,6 +7,7 @@ const (
 	Menu_AskLocation MenuId = 200
 	Menu_Feed        MenuId = 300
 	Menu_Post        MenuId = 400
+	Menu_Ban 	     MenuId = 999999
 )
 
 type User struct {
